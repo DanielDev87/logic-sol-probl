@@ -1,37 +1,32 @@
 package com.danieldev.demo.domain.models;
 
-import java.util.UUID;
+import com.danieldev.demo.domain.enums.EstadoJugador;
 
-public class Jugador {
-    //Atributos
-    private final String id;
-    private final String nombre;
-    private int nivel;
-    private int puntosVida;
-    private int puntosAtaque;
-    
-    //Constructor
-    public Jugador(String id, String nombre, int nivel, int puntosVida, int puntosAtaque) {
-        this.id =UUID.randomUUID().toString();
-        this.nombre = nombre;
-        this.nivel = 1;
-        this.puntosVida = validarVidaInicial(puntosVida);
-        this.puntosAtaque = puntosAtaque;
+public class Jugador extends Personaje {
+     private EstadoJugador estado;
+
+     public Jugador(String nombre, int puntosVida, int puntosAtaque) {
+        super(nombre, puntosVida, puntosAtaque);
+        this.estado = EstadoJugador.SALUDABLE;
     }
-    //Método para proyeger el estdo 
-    private int validarVidaInicial(int vida){
-        return (vida <= 0)? 100: vida;
+
+     @Override
+     public int calcaularDanio(){
+        return this.puntosAtaque + (nivel * 2);
     }
-    //Métodos con lógica de negocio(comportamiento)
-    public void recibirDanio(int danio){
-        if (danio > 0) {
-            this.puntosVida = Math.max(0, this.puntosVida - danio);
-            System.out.println(
-                this.nombre + " has recibido "
-                + danio + "de daño. tu vida actual es: "
-                +  this.puntosVida);
-        }
-    }
+
+     public EstadoJugador getEstado() {
+        if (!estaVivo()) return EstadoJugador.DERROTADO;
+        if (puntosVida < 30) return EstadoJugador.HERIDO;
+        return estado;        
+     }
+
+     public void setEstado(EstadoJugador estado) {
+         this.estado = estado;
+     }
+
     
-    
+
+     
+     
 }
