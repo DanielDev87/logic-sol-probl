@@ -23,9 +23,7 @@ public class Jugador extends Personaje {
 
      public void setEstado(EstadoJugador estado) {
          this.estado = estado;
-     }
-
-    
+     }   
 
      
      
