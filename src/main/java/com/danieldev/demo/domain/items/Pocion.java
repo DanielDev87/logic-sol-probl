@@ -22,10 +22,6 @@ public final class Pocion implements Equipable {
     }
     public int getCuracion() {
         return curacion;
-    }
-
-    
-
-    
+    }   
 
 }
