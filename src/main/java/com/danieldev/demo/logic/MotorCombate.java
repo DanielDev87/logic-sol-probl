@@ -1,23 +1,35 @@
 package com.danieldev.demo.logic;
 
-import com.danieldev.demo.domain.items.Arma;
 import com.danieldev.demo.domain.items.Equipable;
-import com.danieldev.demo.domain.items.Pocion;
 import com.danieldev.demo.domain.models.Personaje;
 
 public class MotorCombate {
 
-    public void ejecutarTurno(Personaje atacante, Personaje defensor){
+    public String ejecutarTurno(Personaje atacante, Personaje defensor){
+        if (atacante == null || defensor == null) {
+            throw new IllegalArgumentException("El atacante y el defensor son obligatorios.");
+        }
+        if (!atacante.estaVivo() || !defensor.estaVivo()) {
+            throw new IllegalStateException("Solo pueden combatir personajes vivos.");
+        }
+
         int danio = atacante.calcaularDanio();
-        System.out.println("Mensaje personalizado del atacante" +  danio);
+        defensor.recibirDanio(danio);
+
+        String resultado = atacante.getNombre() + " causa " + danio
+                + " de daño a " + defensor.getNombre() + ". Vida restante: "
+                + defensor.getPuntosVida() + "/" + defensor.getPuntosVidaMaximos() + ".";
+        if (!defensor.estaVivo()) {
+            resultado += " " + defensor.getNombre() + " ha sido derrotado.";
+        }
+        return resultado;
     }
 
-    public void procesarObjeto(Equipable item, Personaje objetivo){
-        String resultado = switch (item){
-            case Pocion p -> p.usar(objetivo);
-            case Arma a -> a.usar(objetivo);
-        };
-        System.out.println(resultado);
+    public String procesarObjeto(Equipable item, Personaje objetivo){
+        if (item == null || objetivo == null) {
+            throw new IllegalArgumentException("El objeto y el objetivo son obligatorios.");
+        }
+        return item.usar(objetivo);
     }
 
 }

@@ -8,6 +8,7 @@ public abstract class Personaje {
     protected   String nombre;
     protected  int nivel;
     protected  int puntosVida;
+    protected final int puntosVidaMaximos;
     protected int puntosAtaque;
 
     public Personaje( String nombre, int puntosVida, int puntosAtaque) {
@@ -15,6 +16,7 @@ public abstract class Personaje {
         this.nombre = nombre;
         this.nivel = 1;
         this.puntosVida = validarVidaInicial(puntosVida);
+        this.puntosVidaMaximos = this.puntosVida;
         this.puntosAtaque = puntosAtaque;
     }
 
@@ -29,17 +31,12 @@ public abstract class Personaje {
     public void recibirDanio(int danio){
         if (danio > 0) {
             this.puntosVida = Math.max(0, this.puntosVida - danio);
-            System.out.println(
-                this.nombre + " has recibido "
-                + danio + "de daño. tu vida actual es: "
-                +  this.puntosVida);
         }
     }
 
     public void curar(int cantidad){
         if (cantidad > 0 && estaVivo()) {
-           this.puntosVida += cantidad;
-           System.out.println("Mensaje que se curó, cambiarlo"); 
+           this.puntosVida = Math.min(this.puntosVidaMaximos, this.puntosVida + cantidad);
         }
     }
 
@@ -62,6 +59,10 @@ public abstract class Personaje {
 
     public int getPuntosVida() {
         return puntosVida;
+    }
+
+    public int getPuntosVidaMaximos() {
+        return puntosVidaMaximos;
     }
 
     public int getPuntosAtaque() {

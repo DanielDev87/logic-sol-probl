@@ -12,8 +12,18 @@ public final class Pocion implements Equipable {
     }
     @Override
     public String usar(Personaje objetivo){
+        if (objetivo == null) {
+            throw new IllegalArgumentException("El objetivo de la poción es obligatorio.");
+        }
+        int vidaAntes = objetivo.getPuntosVida();
         objetivo.curar(curacion);
-        return "Mensaje que quiero retornar";
+        int vidaRecuperada = objetivo.getPuntosVida() - vidaAntes;
+        if (vidaRecuperada == 0) {
+            return objetivo.estaVivo()
+                    ? objetivo.getNombre() + " ya tiene toda su vida."
+                    : objetivo.getNombre() + " no puede recibir curación porque ha sido derrotado.";
+        }
+        return objetivo.getNombre() + " recupera " + vidaRecuperada + " puntos de vida.";
     }
 
     @Override
