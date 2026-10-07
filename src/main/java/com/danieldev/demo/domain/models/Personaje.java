@@ -18,6 +18,8 @@ public abstract class Personaje {
         this.puntosAtaque = puntosAtaque;
     }
 
+
+
     private int validarVidaInicial(int vida){
         return (vida <= 0)? 100: vida;
     }
